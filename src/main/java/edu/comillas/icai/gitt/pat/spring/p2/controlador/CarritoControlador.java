@@ -25,18 +25,6 @@ public class CarritoControlador {
         return carrito;
     }
 
-    @GetMapping("/api/carrito/{idCarrito}")
-    public Carrito getCarrito(@PathVariable int idCarrito) {
-        return carritos.get(idCarrito);
-    }
-
-    @DeleteMapping("/api/carrito/{idCarrito}")
-    public Carrito borrarCarrito(@PathVariable int idCarrito) {
-        carritos.remove(idCarrito);
-        return null;
-    }
-
-
     //@PostMapping("/api/contadores")
     //@ResponseStatus(HttpStatus.CREATED)
     //public ModeloContador crea(@RequestBody ModeloContador contadorNuevo) {
