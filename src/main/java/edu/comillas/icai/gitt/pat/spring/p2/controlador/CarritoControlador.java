@@ -25,6 +25,14 @@ public class CarritoControlador {
         return carrito;
     }
 
+    @PutMapping("/api/carrito/{idCarrito}")
+    public Carrito modificaCarrito(@PathVariable int idCarrito,
+                                   @RequestBody Carrito carrito) {
+        carritos.put(idCarrito, carrito);
+        return carrito;
+    }
+
+
     //@PostMapping("/api/contadores")
     //@ResponseStatus(HttpStatus.CREATED)
     //public ModeloContador crea(@RequestBody ModeloContador contadorNuevo) {
