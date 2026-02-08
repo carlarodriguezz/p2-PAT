@@ -1,6 +1,7 @@
 package edu.comillas.icai.gitt.pat.spring.p2.controlador;
 
 import edu.comillas.icai.gitt.pat.spring.p2.modelo.Carrito;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,17 +21,18 @@ public class CarritoControlador {
 
     @PostMapping("/api/carrito")
     @ResponseStatus(HttpStatus.CREATED)
-    public Carrito creaCarrito(@RequestBody Carrito carrito) {
+    public Carrito creaCarrito(@Valid @RequestBody Carrito carrito) {
         carritos.put(carrito.getIdCarrito(), carrito);
         return carrito;
     }
 
     @PutMapping("/api/carrito/{idCarrito}")
     public Carrito modificaCarrito(@PathVariable int idCarrito,
-                                   @RequestBody Carrito carrito) {
+                                   @Valid @RequestBody Carrito carrito) {
         carritos.put(idCarrito, carrito);
         return carrito;
     }
+
 
 
     //@PostMapping("/api/contadores")

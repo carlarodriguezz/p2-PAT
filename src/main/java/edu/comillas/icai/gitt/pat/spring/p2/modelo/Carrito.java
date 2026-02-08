@@ -1,13 +1,36 @@
 package edu.comillas.icai.gitt.pat.spring.p2.modelo;
 
-public class Carrito {
-    private int idCarrito;
-    private int idArticulo;
-    private String descripcion;
-    private int unidades;
-    private double precioFinal;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
-    public Carrito(int idCarrito, int idArticulo, String descripcion, int unidades, double precioFinal) {
+public class Carrito {
+
+    @NotNull
+    @Min(1)
+    private Integer idCarrito;
+
+    @NotNull
+    @Min(1)
+    private Integer idArticulo;
+
+    @NotBlank
+    private String descripcion;
+
+    @NotNull
+    @Min(1)
+    private Integer unidades;
+
+    @NotNull
+    @Min(0)
+    private Double precioFinal;
+
+    public Carrito() {
+        // constructor vacío obligatorio para Spring/Jackson
+    }
+
+    public Carrito(Integer idCarrito, Integer idArticulo, String descripcion,
+                   Integer unidades, Double precioFinal) {
         this.idCarrito = idCarrito;
         this.idArticulo = idArticulo;
         this.descripcion = descripcion;
@@ -15,19 +38,19 @@ public class Carrito {
         this.precioFinal = precioFinal;
     }
 
-    public int getIdCarrito() {
+    public Integer getIdCarrito() {
         return idCarrito;
     }
 
-    public void setIdCarrito(int idCarrito) {
+    public void setIdCarrito(Integer idCarrito) {
         this.idCarrito = idCarrito;
     }
 
-    public int getIdArticulo() {
+    public Integer getIdArticulo() {
         return idArticulo;
     }
 
-    public void setIdArticulo(int idArticulo) {
+    public void setIdArticulo(Integer idArticulo) {
         this.idArticulo = idArticulo;
     }
 
@@ -39,19 +62,19 @@ public class Carrito {
         this.descripcion = descripcion;
     }
 
-    public int getUnidades() {
+    public Integer getUnidades() {
         return unidades;
     }
 
-    public void setUnidades(int unidades) {
+    public void setUnidades(Integer unidades) {
         this.unidades = unidades;
     }
 
-    public double getPrecioFinal() {
+    public Double getPrecioFinal() {
         return precioFinal;
     }
 
-    public void setPrecioFinal(double precioFinal) {
+    public void setPrecioFinal(Double precioFinal) {
         this.precioFinal = precioFinal;
     }
 }
