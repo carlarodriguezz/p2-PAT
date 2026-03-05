@@ -6,15 +6,15 @@ import jakarta.persistence.*;
 @Table(name="LineaCarrito")
 public class LineaCarrito {
 
-    @ManyToOne(optional=false)
-    @JoinColumn(name="idCarrito", nullable=false)
-    private Carrito carrito;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idLinea;
 
-    @Column(unique=true, nullable=false)
+    @ManyToOne(optional=false)
+    @JoinColumn(name="idCarrito", nullable=false)
+    private Carrito carrito;
+
+    @Column(nullable=false)
     private int idArticulo;
 
     @Column(nullable=false)
@@ -28,18 +28,24 @@ public class LineaCarrito {
 
     public LineaCarrito(){}
 
-
     public void recalcularCoste() {
         this.costeLinea = this.precioUnitario * this.numUnidades;
     }
 
-
-    public Long getIdCarrito() {
+    public Long getIdLinea() {
         return idLinea;
     }
 
-    public void setIdCarrito(Long idCarrito) {
-        this.idLinea = idCarrito;
+    public void setIdLinea(Long idLinea) {
+        this.idLinea = idLinea;
+    }
+
+    public Carrito getCarrito() {
+        return carrito;
+    }
+
+    public void setCarrito(Carrito carrito) {
+        this.carrito = carrito;
     }
 
     public int getIdArticulo() {
@@ -73,9 +79,4 @@ public class LineaCarrito {
     public void setCosteLinea(int costeLinea) {
         this.costeLinea = costeLinea;
     }
-
-
-
-
-
 }

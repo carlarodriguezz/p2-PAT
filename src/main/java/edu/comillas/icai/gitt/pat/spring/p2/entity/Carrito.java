@@ -25,11 +25,12 @@ public class Carrito {
     private String email;
 
     @Column(nullable=false)
-    private int precio;
+    private int totalPrecio;
 
     public Long getIdCarrito() {
         return idCarrito;
     }
+
 
     public void setIdCarrito(Long idCarrito) {
         this.idCarrito = idCarrito;
@@ -51,12 +52,12 @@ public class Carrito {
         this.email = email;
     }
 
-    public int getPrecio() {
-        return precio;
+    public int getTotalPrecio() {
+        return totalPrecio;
     }
 
-    public void setPrecio(int precio) {
-        this.precio = precio;
+    public void setTotalPrecio(int precio) {
+        this.totalPrecio = precio;
     }
 
     public Carrito(){}

@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
 
-public interface RepoCarrito extends CrudRepository<Carrito, String> {
+public interface RepoCarrito extends CrudRepository<Carrito, Long> {
 
     Optional<Carrito> findByEmail(String email);
 
