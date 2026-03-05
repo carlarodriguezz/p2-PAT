@@ -10,7 +10,7 @@ public interface ServicioInt {
 
         Carrito creaCarrito(Carrito carrito);
 
-        Carrito deleteCarrito(Carrito carrito);
+        void deleteCarrito(Carrito carrito);
 
         Carrito datos(Long idCarrito);
 
