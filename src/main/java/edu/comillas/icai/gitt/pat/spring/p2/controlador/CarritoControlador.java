@@ -1,59 +1,76 @@
 package edu.comillas.icai.gitt.pat.spring.p2.controlador;
 
-import edu.comillas.icai.gitt.pat.spring.p2.modelo.Carrito;
+import edu.comillas.icai.gitt.pat.spring.p2.entity.Carrito;
+import edu.comillas.icai.gitt.pat.spring.p2.entity.LineaCarrito;
+import edu.comillas.icai.gitt.pat.spring.p2.service.ServicioInt;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @RestController
 public class CarritoControlador {
-    private final Map<Integer, Carrito> carritos = new HashMap<>();
 
-    @GetMapping("/api/carrito")
-    public Collection<Carrito> getCarritos() {
-        // Carrito demo = new Carrito(1,1,"camiseta", 2, 35);
-        return carritos.values();
-    }
+    @Autowired
+    private ServicioInt servicioInt;
 
     @PostMapping("/api/carrito")
     @ResponseStatus(HttpStatus.CREATED)
     public Carrito creaCarrito(@Valid @RequestBody Carrito carrito) {
-        carritos.put(carrito.getIdCarrito(), carrito);
-        return carrito;
+        try {
+            return servicioInt.creaCarrito(carrito);
+        } catch (DataIntegrityViolationException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);
+        }
+    }
+
+    @GetMapping("/api/carrito/{idCarrito}")
+    public Carrito getCarrito(@PathVariable Long idCarrito) {
+        Carrito c = servicioInt.datos(idCarrito);
+        if (c == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Carrito no encontrado");
+        }
+        return c;
+    }
+
+    @DeleteMapping("/api/carrito/{idCarrito}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteCarrito(@PathVariable Long idCarrito) {
+        Carrito carrito = servicioInt.datos(idCarrito);
+        if (carrito == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Carrito no encontrado");
+        }
+        servicioInt.deleteCarrito(carrito);
     }
 
     @PutMapping("/api/carrito/{idCarrito}")
-    public Carrito modificaCarrito(@PathVariable int idCarrito,
+    public Carrito modificaCarrito(@PathVariable Long idCarrito,
                                    @Valid @RequestBody Carrito carrito) {
-        carritos.put(idCarrito, carrito);
-        return carrito;
+        // Asegura que actualizas el mismo carrito del path
+        carrito.setIdCarrito(idCarrito);
+        return servicioInt.creaCarrito(carrito); // save() actualiza si el id existe
     }
 
+    @GetMapping("/api/lineas")
+    public List<LineaCarrito> getLineas() {
+        return servicioInt.leeLineas();
+    }
 
+    @PostMapping("/api/carrito/{idCarrito}/lineas")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Carrito anadirLinea(@PathVariable Long idCarrito,
+                               @Valid @RequestBody LineaCarrito linea) {
+        return servicioInt.anadirLinea(idCarrito, linea);
+    }
 
-    //@PostMapping("/api/contadores")
-    //@ResponseStatus(HttpStatus.CREATED)
-    //public ModeloContador crea(@RequestBody ModeloContador contadorNuevo) {
-    //    contadores.put(contadorNuevo.nombre(), contadorNuevo);
-    //    return contadorNuevo;
-    //}
-
-    //@GetMapping("/api/contadores/{nombre}")
-    //public ModeloContador contador(@PathVariable String nombre) {
-    //    return contadores.get(nombre);
-    //}
-
-    //@PutMapping("/api/contadores/{nombre}/incremento/{incremento}")
-    //public ModeloContador incrementa(@PathVariable String nombre,
-    //                                 @PathVariable Integer incremento) {
-        //    ModeloContador contadorActual = contadores.get(nombre);
-        //    ModeloContador contadorIncrementado =
-                //            new ModeloContador(nombre, contadorActual.valor() + incremento);
-    //    contadores.put(nombre, contadorIncrementado);
-    //    return contadorIncrementado;
-    //}
+    @DeleteMapping("/api/carrito/{idCarrito}/lineas/{idLinea}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void borrarLinea(@PathVariable Long idCarrito,
+                            @PathVariable Long idLinea) {
+        servicioInt.borrarLinea(idCarrito, idLinea);
+    }
 }
